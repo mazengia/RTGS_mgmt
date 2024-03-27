@@ -1,0 +1,43 @@
+application:
+  allowedOrigin:
+    - 'http://localhost:4200'
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://10.1.22.72:8761/eureka}
+      #defaultZone: ${EUREKA_URI:http://10.1.12.70:8761/eureka}
+spring:
+  main:
+    allow-bean-definition-overriding: true
+
+  application:
+    name: RTGS-SERVICE
+  data:
+    rest:
+      base-path: /api
+      default-page-size: 20
+  datasource:
+    username: sa
+    password: P@ss@12345
+    url: jdbc:sqlserver://10.1.12.110:1433;encrypt=false;instanceName=EBSQLSRV;databaseName=rtgs;encrypt=false
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServer2012Dialect
+        format_sql: true
+  #    show-sql: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://10.1.22.72:8081/auth/realms/enat
+  #            issuer-uri: http://10.1.12.70:8081/auth/realms/enat
+client:
+  hr:
+    baseUrl: http://10.1.22.72:8083/hr
+#    baseUrl: http://10.1.12.70:8083/hr

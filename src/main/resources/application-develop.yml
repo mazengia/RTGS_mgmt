@@ -1,0 +1,120 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  application:
+    name: Know-Your-Customer
+  datasource:
+    mssql:
+      url: jdbc:sqlserver://10.1.12.110:1433;instanceName=EBSQLSRV;encrypt=false;databaseName=customer_onboarding
+      username: sa
+      password: P@ss@12345
+      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+      jpa:
+        hibernate:
+          ddl-auto: update
+        show-sql: true
+        properties:
+          hibernate:
+            cache:
+              use_second_level_cache: true
+              use_query_cache: true
+              region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
+            dialect: org.hibernate.dialect.SQLServer2012Dialect
+      hikari:
+        leakDetectionThreshold: 2000
+        connectionTimeout: 30000
+        maximumPoolSize: 20
+        idleTimeout: 600000
+        maxLifetime: 1800000
+    mssql-archive:
+      url: jdbc:sqlserver://10.1.12.110:1433;instanceName=EBSQLSRV;encrypt=false;databaseName=customer_onboarding_archive
+      username: sa
+      password: P@ss@12345
+      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+      jpa:
+        hibernate:
+          ddl-auto: update
+        show-sql: true
+        properties:
+          hibernate:
+            cache:
+              use_second_level_cache: true
+              use_query_cache: true
+              region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
+            dialect: org.hibernate.dialect.SQLServer2012Dialect
+      hikari:
+        leakDetectionThreshold: 2000
+        connectionTimeout: 30000
+        maximumPoolSize: 20
+        idleTimeout: 600000
+        maxLifetime: 1800000
+    oracle:
+#      url: jdbc:oracle:thin:@//10.1.10.218:1521/EBPROD1
+#      username: ebfcread
+#      password: password
+      url: jdbc:oracle:thin:@//10.1.10.8:1521/EBPRODSTDBY
+      username: EBFCREAD
+      password: EnatBank#2019
+
+      jpa:
+        hibernate:
+          ddl-auto: none
+          dialect: org.hibernate.dialect.OracleDialect
+        show-sql: true
+        properties:
+      hikari:
+        leakDetectionThreshold: 2000
+        connectionTimeout: 30000
+        maximumPoolSize: 1
+        idleTimeout: 600000
+        maxLifetime: 1800000
+  security:
+    oauth2:
+      client:
+        registration:
+          kyc:
+            provider: kyc
+            client-id: customer_onboarding
+            client-secret: 92f2aa57-6d0b-403a-8661-e18c95e594a1
+            redirect-url: "{baseUrl}/"
+        provider:
+          keycloak:
+            issuer-uri: http://10.1.22.72:8081/auth/realms/enat
+      resourceserver:
+        jwt:
+          issuer-uri: http://10.1.22.72:8081/auth/realms/enat
+storage:
+  location: C:\\home
+file-manager: C:\\home
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://10.1.22.72:8761/eureka}
+
+client:
+  hr:
+    baseUrl: http://10.1.22.72:8083/hr
+    fileUrl: http://localhost:8080
+
+application:
+  allowedOrigin:
+    - 'http://localhost:4200'
+    - 'http://10.1.22.72:5001'
+
+hibernate:
+  hbm2ddl:
+    auto: update
+
+
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        web: DEBUG
+#        security: DEBUG
+#        hibernate: DEBUG
+#        jpa: DEBUG
