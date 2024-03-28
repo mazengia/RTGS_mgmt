@@ -18,8 +18,13 @@ public class RtgsService {
     private final EmployeeClient employeeService;
 
     public Page<Rtgs> searchByChecker(Pageable pageable, JwtAuthenticationToken token) {
+        String employeeId = (String) token.getTokenAttributes().get("employeeID");
+        var brCode = employeeService.getEmployeesByEmployeeId(employeeId).getBranch().getCode();
         Specification<Rtgs> spec = Specification.where(
-                (root, query, builder) -> builder.isNull(root.get("deletedAt"))
+                (root, query, builder) -> builder.and(
+                        builder.isNull(root.get("deletedAt")),
+                        builder.equal(root.get("branch").get("code"), brCode)
+                )
         );
         return search(spec, pageable);
     }
