@@ -30,7 +30,7 @@ public class RtgsService {
         Specification<Rtgs> spec = Specification.where(
                 (root, query, builder) -> builder.and(
                         builder.isNull(root.get("deletedAt")),
-                        builder.equal(root.get("makerBranch").get("code"), brCode)
+                        builder.equal(root.get("branch").get("code"), brCode)
                 )
         );
         return search(spec, pageable);

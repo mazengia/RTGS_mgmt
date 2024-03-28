@@ -5,4 +5,4 @@ ENV SPRING_PROFILES_ACTIVE develop
 
 ENV PORT 8080
 EXPOSE $PORT
-CMD [  "java","-jar","app.jar","-Dserver.port=${PORT}","-Duser.timezone=UTC+03:00" , "-Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}" ]
+CMD [  "java","-jar","app.jar","-Dserver.port=${PORT}" , "-Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}" ]
