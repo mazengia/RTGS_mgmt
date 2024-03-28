@@ -29,7 +29,6 @@ public abstract class Auditable implements Serializable {
     @Version()
     @Column(columnDefinition = "integer default 0")
     private long version;
-
     @Schema(hidden = true)
     @Column(name = "created_by")
     @CreatedBy

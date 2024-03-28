@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 
 public class Util {
 
+
     public static String[] getNullPropertyNames(Object source) {
         final BeanWrapper wrappedSource = new BeanWrapperImpl(source);
         return Stream.of(wrappedSource.getPropertyDescriptors())
@@ -23,7 +24,6 @@ public class Util {
                 .filter(propertyName -> wrappedSource.getPropertyValue(propertyName) == null || propertyName.equals("id"))
                 .toArray(String[]::new);
     }
-
     public static String getUsername() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }

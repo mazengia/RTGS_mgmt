@@ -15,7 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RtgsService {
     private final RtgsRepository rtgsRepository;
-  private final EmployeeClient employeeService;
+    private final EmployeeClient employeeService;
 
     public Page<Rtgs> searchByChecker(Pageable pageable, JwtAuthenticationToken token) {
         Specification<Rtgs> spec = Specification.where(
@@ -26,7 +26,7 @@ public class RtgsService {
 
     public Page<Rtgs> searchByMaker(Pageable pageable, JwtAuthenticationToken token) {
         String employeeId = (String) token.getTokenAttributes().get("employeeID");
-        var brCode =employeeService.getEmployeesByEmployeeId(employeeId).getBranch().getCode();
+        var brCode = employeeService.getEmployeesByEmployeeId(employeeId).getBranch().getCode();
         Specification<Rtgs> spec = Specification.where(
                 (root, query, builder) -> builder.and(
                         builder.isNull(root.get("deletedAt")),
@@ -35,6 +35,7 @@ public class RtgsService {
         );
         return search(spec, pageable);
     }
+
     public Optional<Rtgs> getRtgsById(long id) {
         return rtgsRepository.findById(id);
     }
@@ -48,12 +49,10 @@ public class RtgsService {
         return (Rtgs) rtgsRepository.findAll(spec);
     }
 
-//    @Transactional
+    //    @Transactional
     public Rtgs store(Rtgs rtgs, JwtAuthenticationToken token) {
         var employeeId = (String) token.getTokenAttributes().get("employeeID");
 
-        System.out.println("token=");
-        System.out.println(employeeId);
         var employee = employeeService.getEmployeesByEmployeeId(employeeId);
         rtgs.setBranch(employee.getBranch());
         return rtgsRepository.save(rtgs);
@@ -66,6 +65,9 @@ public class RtgsService {
     public Rtgs updateRtgsById(Rtgs rtgs, long id, JwtAuthenticationToken token) {
         var employeeId = (String) token.getTokenAttributes().get("employeeID");
         var employee = employeeService.getEmployeesByEmployeeId(employeeId);
+
+        var oldData = getRtgsById(id);
+        rtgs.setVersion(oldData.get().getVersion());
         rtgs.setBranch(employee.getBranch());
         rtgs.setId(id);
         return rtgsRepository.save(rtgs);

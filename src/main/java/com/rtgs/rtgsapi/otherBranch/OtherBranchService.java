@@ -50,10 +50,9 @@ public class OtherBranchService {
     }
 
     public OtherBank updateById(OtherBank otherBank, long id, JwtAuthenticationToken token) {
-        var employeeId = (String) token.getTokenAttributes().get("employeeID");
-        var employee = employeeService.getEmployeesByEmployeeId(employeeId);
-//        otherBranch.setMakerBranch(employee.getBranch());
+        var oldData=getOtherBranchById(id);
         otherBank.setId(id);
+        otherBank.setVersion(oldData.get().getVersion());
         return otherBranchRepository.save(otherBank);
     }
 }
