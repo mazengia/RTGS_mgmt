@@ -12,10 +12,6 @@ spring:
 
   application:
     name: RTGS-SERVICE
-  data:
-    rest:
-      base-path: /api
-      default-page-size: 20
   datasource:
     username: sa
     password: P@ss@12345
