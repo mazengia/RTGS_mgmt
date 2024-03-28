@@ -1,14 +1,19 @@
 package com.rtgs.rtgsapi.rtgs;
 
 import com.rtgs.rtgsapi.dtos.employee.EmployeeClient;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -17,28 +22,27 @@ public class RtgsService {
     private final RtgsRepository rtgsRepository;
     private final EmployeeClient employeeService;
 
-    public Page<Rtgs> searchByChecker(Pageable pageable, JwtAuthenticationToken token) {
-        String employeeId = (String) token.getTokenAttributes().get("employeeID");
-        var brCode = employeeService.getEmployeesByEmployeeId(employeeId).getBranch().getCode();
-        Specification<Rtgs> spec = Specification.where(
-                (root, query, builder) -> builder.and(
-                        builder.isNull(root.get("deletedAt")),
-                        builder.equal(root.get("branch").get("code"), brCode)
-                )
-        );
-        return search(spec, pageable);
-    }
+//    public Page<Rtgs> searchByChecker(Pageable pageable, JwtAuthenticationToken token) {
+//        Specification<Rtgs> spec = Specification.where(
+//                (root, query, builder) -> builder.isNull(root.get("deletedAt"))
+//        );
+//        return search(spec, pageable);
+//    }
 
-    public Page<Rtgs> searchByMaker(Pageable pageable, JwtAuthenticationToken token) {
+
+    public Page<Rtgs> getRtgs(Pageable pageable, JwtAuthenticationToken token) {
         String employeeId = (String) token.getTokenAttributes().get("employeeID");
         var brCode = employeeService.getEmployeesByEmployeeId(employeeId).getBranch().getCode();
         Specification<Rtgs> spec = Specification.where(
-                (root, query, builder) -> builder.and(
-                        builder.isNull(root.get("deletedAt")),
-                        builder.equal(root.get("branch").get("code"), brCode)
-                )
-        );
-        return search(spec, pageable);
+                (root, query, builder) -> {
+                    var predicate = new ArrayList<>();
+                    predicate.add(builder.equal(root.get("branch").get("code"), brCode));
+                    predicate.add(builder.isNull(root.get("deletedAt")));
+                    return builder.and(predicate.toArray(new Predicate[0]));
+                });
+
+        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "id"));
+        return search(spec, pageRequest);
     }
 
     public Optional<Rtgs> getRtgsById(long id) {
@@ -50,9 +54,6 @@ public class RtgsService {
         return rtgsRepository.findAll(spec, pageable);
     }
 
-    public Rtgs search(Specification<Rtgs> spec) {
-        return (Rtgs) rtgsRepository.findAll(spec);
-    }
 
     //    @Transactional
     public Rtgs store(Rtgs rtgs, JwtAuthenticationToken token) {
