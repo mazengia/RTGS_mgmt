@@ -15,7 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RtgsService {
     private final RtgsRepository rtgsRepository;
-    EmployeeClient employeeService;
+  private final EmployeeClient employeeService;
 
     public Page<Rtgs> searchByChecker(Pageable pageable, JwtAuthenticationToken token) {
         Specification<Rtgs> spec = Specification.where(
@@ -48,9 +48,12 @@ public class RtgsService {
         return (Rtgs) rtgsRepository.findAll(spec);
     }
 
-    @Transactional
+//    @Transactional
     public Rtgs store(Rtgs rtgs, JwtAuthenticationToken token) {
         var employeeId = (String) token.getTokenAttributes().get("employeeID");
+
+        System.out.println("token=");
+        System.out.println(employeeId);
         var employee = employeeService.getEmployeesByEmployeeId(employeeId);
         rtgs.setBranch(employee.getBranch());
         return rtgsRepository.save(rtgs);
