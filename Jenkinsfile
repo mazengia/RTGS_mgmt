@@ -27,7 +27,7 @@ stages{
     stage("Push Docker Image to Local Registry"){
         steps{
            script{
-               docker.withRegistry("http://10.1.12.73:5000"){
+               docker.withRegistry("https://10.1.12.73:5000"){
                    docker.image("10.1.12.73:5000/rtgs-api:${TAG}").push()
                    docker.image("10.1.12.73:5000/rtgs-api:${TAG}").push("latest")
                }
