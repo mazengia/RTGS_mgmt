@@ -2,7 +2,6 @@ package com.rtgs.rtgsapi.rtgs;
 
 import com.rtgs.rtgsapi.dtos.employee.EmployeeClient;
 import jakarta.persistence.criteria.Predicate;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,7 +11,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -29,8 +27,17 @@ public class RtgsService {
 //        return search(spec, pageable);
 //    }
 
-
-    public Page<Rtgs> getRtgs(Pageable pageable, JwtAuthenticationToken token) {
+    public Page<Rtgs> searchByChecker(Pageable pageable, JwtAuthenticationToken token) {
+        Specification<Rtgs> spec = Specification.where(
+                (root, query, builder) -> {
+                    var predicate = new ArrayList<>();
+                    predicate.add(builder.isNull(root.get("deletedAt")));
+                    return builder.and(predicate.toArray(new Predicate[0]));
+                });
+        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "id"));
+        return search(spec, pageRequest);
+    }
+    public Page<Rtgs> getRtgsByMaker(Pageable pageable, JwtAuthenticationToken token) {
         String employeeId = (String) token.getTokenAttributes().get("employeeID");
         var brCode = employeeService.getEmployeesByEmployeeId(employeeId).getBranch().getCode();
         Specification<Rtgs> spec = Specification.where(
@@ -40,7 +47,6 @@ public class RtgsService {
                     predicate.add(builder.isNull(root.get("deletedAt")));
                     return builder.and(predicate.toArray(new Predicate[0]));
                 });
-
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "id"));
         return search(spec, pageRequest);
     }
@@ -58,9 +64,9 @@ public class RtgsService {
     //    @Transactional
     public Rtgs store(Rtgs rtgs, JwtAuthenticationToken token) {
         var employeeId = (String) token.getTokenAttributes().get("employeeID");
-
         var employee = employeeService.getEmployeesByEmployeeId(employeeId);
         rtgs.setBranch(employee.getBranch());
+        rtgs.setStatus(Status.P);
         return rtgsRepository.save(rtgs);
     }
 

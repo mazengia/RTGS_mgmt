@@ -11,10 +11,10 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Data
-@Entity(name = "rtgs")
-@Table(name = "rtgs")
-@SQLDelete(sql = "UPDATE rtgs SET deleted = 'true'  WHERE id=? and version=?")
-@Where(clause = "deleted=false")
+@Entity
+@Table
+//@SQLDelete(sql = "UPDATE rtgs SET deleted = 'true'  WHERE id=? and version=?")
+//@Where(clause = "deleted=false")
 
 public class Rtgs extends Auditable {
     @Id

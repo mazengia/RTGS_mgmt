@@ -26,15 +26,15 @@ public class RtgsController {
     @GetMapping()
     private ResponseEntity<PagedModel<RtgsDto>> getAll(Pageable pageable, PagedResourcesAssembler assembler, UriComponentsBuilder uriBuilder, HttpServletResponse response,JwtAuthenticationToken token) {
         eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
-                RtgsDto.class, uriBuilder, response, pageable.getPageNumber(), rtgsService.getRtgs(pageable,token).getTotalPages(), pageable.getPageSize()));
-        return new ResponseEntity<PagedModel<RtgsDto>>(assembler.toModel(rtgsService.getRtgs(pageable,token).map(rtgsMapper::toRtgsDto)), HttpStatus.OK);
+                RtgsDto.class, uriBuilder, response, pageable.getPageNumber(), rtgsService.searchByChecker(pageable,token).getTotalPages(), pageable.getPageSize()));
+        return new ResponseEntity<PagedModel<RtgsDto>>(assembler.toModel(rtgsService.searchByChecker(pageable,token).map(rtgsMapper::toRtgsDto)), HttpStatus.OK);
     }
-//    @GetMapping("/maker")
-//    private ResponseEntity<PagedModel<RtgsDto>> getAllByMakerBranch(Pageable pageable, PagedResourcesAssembler assembler, UriComponentsBuilder uriBuilder, HttpServletResponse response,JwtAuthenticationToken token) {
-//        eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
-//                RtgsDto.class, uriBuilder, response, pageable.getPageNumber(), rtgsService.searchByMaker(pageable,token).getTotalPages(), pageable.getPageSize()));
-//        return new ResponseEntity<PagedModel<RtgsDto>>(assembler.toModel(rtgsService.searchByMaker(pageable,token).map(rtgsMapper::toRtgsDto)), HttpStatus.OK);
-//    }
+    @GetMapping("/maker")
+    private ResponseEntity<PagedModel<RtgsDto>> getAllByMakerBranch(Pageable pageable, PagedResourcesAssembler assembler, UriComponentsBuilder uriBuilder, HttpServletResponse response,JwtAuthenticationToken token) {
+        eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
+                RtgsDto.class, uriBuilder, response, pageable.getPageNumber(), rtgsService.getRtgsByMaker(pageable,token).getTotalPages(), pageable.getPageSize()));
+        return new ResponseEntity<PagedModel<RtgsDto>>(assembler.toModel(rtgsService.getRtgsByMaker(pageable,token).map(rtgsMapper::toRtgsDto)), HttpStatus.OK);
+    }
     @GetMapping("/{id}")
     private Optional<Rtgs> getRtgsById(@PathVariable long id) {
         return rtgsService.getRtgsById(id);
