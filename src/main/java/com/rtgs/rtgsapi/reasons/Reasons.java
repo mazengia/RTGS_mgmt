@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 @Data
 @Entity(name = "reasons")
-@Table(name = "other_bank")
+@Table(name = "reasons")
 @SQLDelete(sql = "UPDATE reasons SET deleted = 'true'  WHERE id=? and version=?")
 @Where(clause = "deleted=false")
 

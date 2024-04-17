@@ -19,5 +19,7 @@ public class RtgsDto implements Serializable {
     private OtherBank otherBank;
     private Reasons reasons;
     private Branch branch;
+    private String description;
     private Status status;
+    private Status ho;
 }

@@ -20,13 +20,6 @@ public class RtgsService {
     private final RtgsRepository rtgsRepository;
     private final EmployeeClient employeeService;
 
-//    public Page<Rtgs> searchByChecker(Pageable pageable, JwtAuthenticationToken token) {
-//        Specification<Rtgs> spec = Specification.where(
-//                (root, query, builder) -> builder.isNull(root.get("deletedAt"))
-//        );
-//        return search(spec, pageable);
-//    }
-
     public Page<Rtgs> searchByChecker(Pageable pageable, JwtAuthenticationToken token) {
         Specification<Rtgs> spec = Specification.where(
                 (root, query, builder) -> {
@@ -37,6 +30,7 @@ public class RtgsService {
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "id"));
         return search(spec, pageRequest);
     }
+
     public Page<Rtgs> getRtgsByMaker(Pageable pageable, JwtAuthenticationToken token) {
         String employeeId = (String) token.getTokenAttributes().get("employeeID");
         var brCode = employeeService.getEmployeesByEmployeeId(employeeId).getBranch().getCode();
@@ -44,6 +38,18 @@ public class RtgsService {
                 (root, query, builder) -> {
                     var predicate = new ArrayList<>();
                     predicate.add(builder.equal(root.get("branch").get("code"), brCode));
+                    predicate.add(builder.isNull(root.get("deletedAt")));
+                    return builder.and(predicate.toArray(new Predicate[0]));
+                });
+        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "id"));
+        return search(spec, pageRequest);
+    }
+
+    public Page<Rtgs> getApprovedRtgs(Pageable pageable) {
+        Specification<Rtgs> spec = Specification.where(
+                (root, query, builder) -> {
+                    var predicate = new ArrayList<>();
+                    predicate.add(builder.equal(root.get("status"), Status.A));
                     predicate.add(builder.isNull(root.get("deletedAt")));
                     return builder.and(predicate.toArray(new Predicate[0]));
                 });
@@ -77,11 +83,14 @@ public class RtgsService {
     public Rtgs updateRtgsById(Rtgs rtgs, long id, JwtAuthenticationToken token) {
         var employeeId = (String) token.getTokenAttributes().get("employeeID");
         var employee = employeeService.getEmployeesByEmployeeId(employeeId);
-
         var oldData = getRtgsById(id);
         rtgs.setVersion(oldData.get().getVersion());
         rtgs.setBranch(employee.getBranch());
         rtgs.setId(id);
+
+        if (rtgs.getStatus() == null) {
+            rtgs.setStatus(oldData.get().getStatus());
+        }
         return rtgsRepository.save(rtgs);
     }
 }

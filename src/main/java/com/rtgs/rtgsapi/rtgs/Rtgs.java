@@ -28,11 +28,14 @@ public class Rtgs extends Auditable {
     private String otherBranch;
     @Enumerated(EnumType.STRING)
     private Status status;
+    @Enumerated(EnumType.STRING)
+    private Status ho;
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "name", column = @Column(name = "branch_name")),
             @AttributeOverride(name = "code", column = @Column(name = "branch_code"))
     })
     private Branch branch;
+    private String description;
 
 }

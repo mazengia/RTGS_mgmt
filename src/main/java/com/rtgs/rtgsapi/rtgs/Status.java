@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.stream.Stream;
 
 public enum Status {
-    P("PENDING"), A("APPROVED"), R("REJECTED");
+    P("PENDING"), A("APPROVED"), R("REJECTED"),T("TRANSFERRED");
 
     private final String status;
 
