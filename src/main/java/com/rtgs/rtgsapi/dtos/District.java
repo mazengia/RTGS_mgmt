@@ -1,16 +1,16 @@
-package com.rtgs.rtgsapi.dtos.branch;
+package com.rtgs.rtgsapi.dtos;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-public class Branch {
+public class District {
+    private  String code;
     private String name;
-    private String code;
 }
+

@@ -45,5 +45,4 @@ public abstract class Auditable implements Serializable {
     @Column(name = "updated_at")
     @LastModifiedDate
     private LocalDateTime updatedAt;
-    private String remark;
 }

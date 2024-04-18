@@ -1,6 +1,7 @@
 package com.rtgs.rtgsapi.rtgs;
 
-import com.rtgs.rtgsapi.dtos.branch.Branch;
+import com.rtgs.rtgsapi.converters.FeedbacksConverter;
+import com.rtgs.rtgsapi.dtos.Branch;
 import com.rtgs.rtgsapi.otherBranch.OtherBank;
 import com.rtgs.rtgsapi.reasons.Reasons;
 import com.rtgs.rtgsapi.utils.Auditable;
@@ -37,5 +38,9 @@ public class Rtgs extends Auditable {
     })
     private Branch branch;
     private String description;
+    private String remark;
+    @Convert(converter = FeedbacksConverter.class)
+    @Lob
+    private Feedbacks feedbacks;
 
 }

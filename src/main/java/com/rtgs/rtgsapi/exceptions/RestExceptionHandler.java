@@ -10,23 +10,12 @@ import jakarta.persistence.NonUniqueResultException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.http.converter.HttpMessageNotWritableException;
-import org.springframework.web.HttpMediaTypeNotSupportedException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import static org.springframework.http.HttpStatus.*;
@@ -40,8 +29,8 @@ import static org.springframework.http.HttpStatus.*;
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ResponseStatus(CONFLICT)
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    protected ResponseEntity<Object> handleUserAlreadyExistException(UserAlreadyExistsException ex) {
+    @ExceptionHandler(RuntimeExceptions.class)
+    protected ResponseEntity<Object> handleUserAlreadyExistException(RuntimeExceptions ex) {
         return buildResponseEntity(new ApiError(CONFLICT, ex.getMessage(),ex));
     }
     @ResponseStatus(CONFLICT)

@@ -1,6 +1,6 @@
 package com.rtgs.rtgsapi.reasons;
 
-import com.rtgs.rtgsapi.dtos.branch.Branch;
+import com.rtgs.rtgsapi.dtos.Branch;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

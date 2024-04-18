@@ -1,9 +1,9 @@
 package com.rtgs.rtgsapi.exceptions;
 
-public class UserAlreadyExistsException extends RuntimeException {
+public class RuntimeExceptions extends RuntimeException {
     private String message;
 
-    public UserAlreadyExistsException(String message) {
+    public RuntimeExceptions(String message) {
         this.message = message;
     }
 

@@ -1,6 +1,6 @@
 package com.rtgs.rtgsapi.reasons;
 
-import com.rtgs.rtgsapi.dtos.branch.Branch;
+import com.rtgs.rtgsapi.dtos.Branch;
 import com.rtgs.rtgsapi.utils.Auditable;
 import jakarta.persistence.*;
 import lombok.Data;

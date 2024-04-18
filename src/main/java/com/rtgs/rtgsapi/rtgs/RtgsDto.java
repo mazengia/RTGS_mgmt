@@ -1,6 +1,6 @@
 package com.rtgs.rtgsapi.rtgs;
 
-import com.rtgs.rtgsapi.dtos.branch.Branch;
+import com.rtgs.rtgsapi.dtos.Branch;
 import com.rtgs.rtgsapi.otherBranch.OtherBank;
 import com.rtgs.rtgsapi.reasons.Reasons;
 import lombok.AllArgsConstructor;
@@ -22,4 +22,6 @@ public class RtgsDto implements Serializable {
     private String description;
     private Status status;
     private Status ho;
+    private String remark;
+    private Feedbacks feedbacks;
 }
