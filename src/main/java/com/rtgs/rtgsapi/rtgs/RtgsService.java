@@ -114,7 +114,6 @@ public class RtgsService {
         try {
             var oldData = getRtgsById(id);
             rtgs.setVersion(oldData.getVersion());
-//            rtgs.setBranch(employee.getBranch());
             rtgs.setId(id);
 
             if (rtgs.getStatus() == null) {
@@ -132,6 +131,8 @@ public class RtgsService {
                 rtgs.setFeedbacks(new Feedbacks(existingFeedback));
             }
             rtgs.setRemark(null);
+
+            rtgs.setBranch(oldData.getBranch());
             return rtgsRepository.save(rtgs);
         }
         catch (Exception exception){
