@@ -10,13 +10,15 @@ import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import java.io.Serializable;
+
 @Data
 @Entity
 @Table
 @SQLDelete(sql = "UPDATE rtgs SET deleted = 'true'  WHERE id=? and version=?")
 @Where(clause = "deleted=false")
 
-public class Rtgs extends Auditable {
+public class Rtgs  extends Auditable implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
