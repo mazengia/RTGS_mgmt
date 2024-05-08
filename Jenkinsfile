@@ -50,7 +50,7 @@ stages{
         }
            steps{
                     sshagent(['enat-remedy-production']) {
-                    sh 'ssh -o StrictHostKeyChecking=no -l  administrator 10.1.12.70      "docker stop rtgs-api | true;     docker rm rtgs-api | true;  docker run -p  7008:8080 -e "SPRING_PROFILES_ACTIVE=prod" -d --name rtgs-api 10.1.12.73:5000/rtgs-api:${TAG}"'
+                    sh 'ssh -o StrictHostKeyChecking=no -l  administrator 10.1.12.70      "docker stop rtgs-api | true;     docker rm rtgs-api | true;  docker run -p  7008:8080 -e "SPRING_PROFILES_ACTIVE=live" -d --name rtgs-api 10.1.12.73:5000/rtgs-api:${TAG}"'
                 }
             }
     }
