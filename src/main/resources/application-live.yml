@@ -1,77 +1,37 @@
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,prometheus
+application:
+  allowedOrigin:
+    - 'http://localhost:4200'
+    - 'http://10.1.12.70'
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://10.1.12.70:8761/eureka}
 spring:
-  threads:
-    virtual:
-      enabled: true
   main:
     allow-bean-definition-overriding: true
+
+  application:
+    name: RTGS-SERVICE
+  datasource:
+    username: sa
+    password: admin@123
+    url: jdbc:sqlserver://10.1.12.75:1433;encrypt=false;instanceName=EBSQLSRV;databaseName=rtgs;encrypt=false
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
   jpa:
     hibernate:
-      ddl-auto: none
-      database-platform:
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.SQLServer2012Dialect
-    show-sql: false
-
-  datasource:
-    username: app-read
-    password: app-read123
-    url: jdbc:sqlserver://10.1.12.75:1433;encrypt=false;instanceName=EBSQLSRV;databaseName=enat_hr
-  hikari:
-#        leakDetectionThreshold: 2000
-        connectionTimeout: 30000
-        maximumPoolSize: 50
-        idleTimeout: 600000
-        maxLifetime: 1800000
-  rabbitmq:
-    host: 10.1.12.70
-    password: guest
-    username: guest
-
-
+        format_sql: true
+  #    show-sql: true
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: http://10.1.12.70:8081/auth/realms/enat
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: ${EUREKA_URI:http://10.1.12.70:8761/eureka}
-  instance:
-    preferIpAddress: true
-
-application:
-  allowedOrigin:
-    - 'http://10.1.12.70:4200'
-    - 'http://10.1.12.70:81'
-    - 'http://10.1.12.70:5001'
-    - 'http://10.1.12.70:4007'
-    - 'http://localhost:4200'
-    - 'http://localhost'
-  countActing: true
-  organization: 'Enat Bank S.C.'
+client:
   hr:
-    cc:
-      - alikinew@enatbanksc.com
-      - hteshome@enatbanksc.com
-  notification:
-    countdown: 5
-logging:
-  level:
-    com:
-      enatsystem:
-        hr: ERROR
-    org:
-      hibernate:
-        SQL: ERROR
-        type:
-          descriptor:
-            sql:
-              BasicBinder: ERROR
+    baseUrl: http://10.1.12.70:8083/hr
