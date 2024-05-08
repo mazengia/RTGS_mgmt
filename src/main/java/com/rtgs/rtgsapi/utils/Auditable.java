@@ -26,9 +26,11 @@ public abstract class Auditable implements Serializable {
     @Schema(hidden = true)
     private LocalDateTime deletedAt;
     private boolean deleted = Boolean.FALSE;
-    @Version()
-    @Column(columnDefinition = "integer default 0")
+
+    @Version
+    @Column(name = "version", columnDefinition = "int default 0")
     private long version;
+
     @Schema(hidden = true)
     @Column(name = "created_by")
     @CreatedBy
