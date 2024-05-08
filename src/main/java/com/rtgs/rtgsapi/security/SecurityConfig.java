@@ -37,7 +37,7 @@ public class SecurityConfig  {
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-       http.cors(withDefaults());
+//       http.cors(withDefaults());
         http.authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/service-a/**").hasAuthority("SCOPE_authority-a")
