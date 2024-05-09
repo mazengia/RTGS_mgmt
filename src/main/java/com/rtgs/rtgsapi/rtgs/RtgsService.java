@@ -119,16 +119,20 @@ public class RtgsService {
             if (rtgs.getStatus() == null) {
                 rtgs.setStatus(oldData.getStatus());
             }
+            List<Feedback> existingFeedback = new ArrayList<>();
             if (rtgs.getRemark()!=null&&!rtgs.getRemark().isBlank()) {
                 Feedback newFeedbacks = new Feedback();
                 newFeedbacks.setComment(rtgs.getRemark());
                 newFeedbacks.setPostedBy(format("%s %s", employee.getFirstName(), employee.getMiddleName()));
-                List<Feedback> existingFeedback = new ArrayList<>();
                 if (oldData.getFeedbacks() != null) {
                     existingFeedback.addAll(oldData.getFeedbacks().feedbacks());
                 }
                 existingFeedback.add(newFeedbacks);
                 rtgs.setFeedbacks(new Feedbacks(existingFeedback));
+            }
+            else {
+
+                rtgs.setFeedbacks(oldData.getFeedbacks());
             }
             rtgs.setRemark(null);
 
