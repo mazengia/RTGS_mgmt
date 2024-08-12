@@ -34,6 +34,15 @@ public class RtgsController {
                 RtgsDto.class, uriBuilder, response, pageable.getPageNumber(), rtgsService.getRtgsByMaker(pageable,employee).getTotalPages(), pageable.getPageSize()));
         return new ResponseEntity<PagedModel<RtgsDto>>(assembler.toModel(rtgsService.getRtgsByMaker(pageable,employee).map(rtgsMapper::toRtgsDto)), HttpStatus.OK);
     }
+    @GetMapping("/status/{status}")
+    private ResponseEntity<PagedModel<RtgsDto>> searchByStatus(@PathVariable Status status,Pageable pageable, PagedResourcesAssembler assembler, UriComponentsBuilder uriBuilder, HttpServletResponse response,JwtAuthenticationToken token) {
+        var employee = rtgsService.getEmployeeFromToken(token);
+        eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
+                RtgsDto.class, uriBuilder, response, pageable.getPageNumber(), rtgsService.searchByStatus(status,pageable).getTotalPages(), pageable.getPageSize()));
+        return new ResponseEntity<PagedModel<RtgsDto>>(assembler.toModel(rtgsService.searchByStatus(status,pageable).map(rtgsMapper::toRtgsDto)), HttpStatus.OK);
+    }
+
+
     @GetMapping("/approved")
     private ResponseEntity<PagedModel<RtgsDto>> getApprovedRtgs(Pageable pageable, PagedResourcesAssembler assembler, UriComponentsBuilder uriBuilder, HttpServletResponse response) {
         eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(

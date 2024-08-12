@@ -37,7 +37,17 @@ public class RtgsService {
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "id"));
         return search(spec, pageRequest);
     }
-
+    public Page<Rtgs> searchByStatus(Status status,Pageable pageable) {
+        Specification<Rtgs> spec = Specification.where(
+                (root, query, builder) -> {
+                    var predicate = new ArrayList<>();
+                    predicate.add(builder.isNull(root.get("deletedAt")));
+                    predicate.add(builder.equal(root.get("ho"), status));
+                    return builder.and(predicate.toArray(new Predicate[0]));
+                });
+        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "id"));
+        return search(spec, pageRequest);
+    }
     public Page<Rtgs> getRtgsByMaker(Pageable pageable, Employee employee) {
         try {
             var brCode = employee.getBranch().getCode();
