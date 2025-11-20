@@ -4,7 +4,7 @@ application:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:http://10.1.22.72:8761/eureka}
+      defaultZone:""
 spring:
   main:
     allow-bean-definition-overriding: true
@@ -12,9 +12,9 @@ spring:
   application:
     name: RTGS-SERVICE
   datasource:
-    username: sa
-    password: P@ss@12345
-    url: jdbc:sqlserver://10.1.12.110:1433;encrypt=false;instanceName=EBSQLSRV;databaseName=rtgs;encrypt=false
+    username: saddd
+    password: xyz
+    url: jdbc:sqlserver://localhost:1433;encrypt=false;instanceName=EBSQLSRV;databaseName=xyz;encrypt=false
   jackson:
     serialization:
       fail-on-empty-beans: false
@@ -30,7 +30,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://10.1.22.72:8081/auth/realms/enat
+          issuer-uri:""
 client:
   hr:
-    baseUrl: http://10.1.22.72:8083/hr
+    baseUrl: ""
